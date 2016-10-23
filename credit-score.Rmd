@@ -5,8 +5,10 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-install.package("readr")
-install.package("ggplot2")
+install.packages("readr")
+install.packages("dplyr")
+install.packages("ggplot2")
+
 library(readr)
 library(ggplot2)
 ```
