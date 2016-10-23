@@ -1,0 +1,41 @@
+---
+title: "Exploration"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.package("readr")
+install.package("ggplot2")
+library(readr)
+library(ggplot2)
+```
+
+```{r}
+nacols <- function(df) {
+  unlist(lapply(df, function(x) any(is.na(x))))
+}
+
+nacols_name <- function(df) {
+  colnames(df)[nacols(df)]
+}
+```
+
+## Problem statement
+
+Given a large data set of client financial information, attempt to determine if a given client will default on their payment.
+
+## Dataset
+
+```{r}
+training <- read_csv("./data/cs-training.csv")
+training <- training[, -1]
+
+testing <- read_csv("./data/cs-test.csv")
+testing <- testing[, -1]
+```
+
+Two datasets were used for this study one for training and one for testing with `r nrow(training)` and `r nrow(testing)` entries respectively. Each set includes 10 predictors, with the training set also including a response variable.
+
+The training dataset contains `r sum(nacols(training))` predictors with missing values, namely `r nacols_name(training)` with `r sum(is.na(training))` entries in the dataset containing missing values. Missing values are very prevalent and should be considered in the rest of the study.
+
