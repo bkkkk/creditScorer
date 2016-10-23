@@ -50,7 +50,7 @@ training <- training %>%
 
 ```
 
-Two datasets were used for this study one for training and one for testing with `r nrow(training)` and `r nrow(testing)` entries respectively. Each set includes 10 predictors, with the training set also including a response variable.
+Two datasets were used for this study one for training and one for testing with `r nrow(training)` and `r nrow(testing)` entries respectively. Each set includes 10 predictors, with the training set also including a response variable. These include information about the borrower's income, age, and number of dependants; number of lines of credit; and how many times the borrower missed a due date by as much as 60, 90, or more than 90 days. The full list of variables is included at the end of the report.
 
 The training dataset contains `r sum(nacols(training))` predictors with missing values, namely `r nacols_name(training)` with `r sum(is.na(training))` entries in the dataset containing missing values. Missing values are very prevalent and should be considered in the rest of the study.
 
