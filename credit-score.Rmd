@@ -10,6 +10,7 @@ install.packages("dplyr")
 install.packages("ggplot2")
 
 library(readr)
+library(dplyr)
 library(ggplot2)
 ```
 
@@ -31,7 +32,21 @@ Given a large data set of client financial information, attempt to determine if 
 
 ```{r}
 training <- read_csv("./data/cs-training.csv")
-training <- training[, -1]
+training$X1 <- NULL
+training <- training %>%
+  select(seriousDqlin = SeriousDlqin2yrs,
+         age = age,
+         nDependants = NumberOfDependents,
+         monthlyIncome = MonthlyIncome,
+         debtRatio = DebtRatio,
+         pastDue30 = `NumberOfTime30-59DaysPastDueNotWorse`,
+         pastDue60 = `NumberOfTime60-89DaysPastDueNotWorse`,
+         pastDue90 = NumberOfTimes90DaysLate,
+         revolvingUtil = RevolvingUtilizationOfUnsecuredLines,
+         openLines = NumberOfOpenCreditLinesAndLoans,
+         realEstateLines = NumberRealEstateLoansOrLines
+  )
+
 
 testing <- read_csv("./data/cs-test.csv")
 testing <- testing[, -1]
