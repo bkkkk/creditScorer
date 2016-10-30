@@ -212,6 +212,85 @@ clean_tr %>%
        y = "")
 ```
 
+
+### Monthly Income
+
+The monthly income as the name suggest is the monthly income of the borrower. The range of values here is quite surprising, there are numerous borrowers with incomes in the millions. Given the range of values it is impossible to assume which currency is being used in the measurement. Shown below is only the bulk of the distribution.
+
+```{r monthly-income-bulk}
+clean_tr %>%
+  select(seriousDlqin, monthlyIncome) %>%
+  na.omit() %>%
+  ggplot(aes(monthlyIncome, fill = seriousDlqin)) +
+  geom_histogram() +
+  xlim(-1, 30000) +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  # theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Monthly Income",
+       # subtitle = "Distribution Bulk",
+       caption = "source: www.kaggle.com",
+       x = "Monthly Income",
+       y = "")
+```
+
+Interestingly, it seems that the borrowers who did default on their payment tend to be in the low monthly income section of the disribution. This makes sense since, having more income makes paying for loans easier.
+
+The dataset also includes `r sum(clean_tr$monthlyIncome > 30000, na.rm = T)` high-earners with monthly incomes over 30000.
+
+Interestingly, there also seems to be two peaks at zero and 1 incomes, as can been seen from the distribution below this does not fit the rest of the distribution. It is hard to suggest what could be happening here. This could be mismeasurement where some records are simply missing but were not marked as N/A, another possibility is that 0 and 1 are used as dummy codes. Finally, it is possible that some people simply have no income at all. If there were borrowers with no income one would expect a smooth tail towards zero, having a large peak at zero is highly suspect.
+
+```{r}
+clean_tr %>%
+  select(seriousDlqin, monthlyIncome) %>%
+  na.omit() %>%
+  ggplot(aes(monthlyIncome, fill = seriousDlqin)) +
+  geom_histogram(binwidth = 1) +
+  xlim(-2, 400) +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  #theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Monthly Income",
+       # subtitle = "Distribution Bulk",
+       caption = "source: www.kaggle.com",
+       x = "Monthly Income",
+       y = "")
+```
+
+Let us examine these cases more closely, starting with age and number of dependants. Nothing in the age distribution suggests that this is a specific kind of borrower.
+
+```{r zero-income-age}
+clean_tr %>%
+  filter(monthlyIncome == 0) %>%
+  ggplot(aes(age, fill = seriousDlqin)) +
+  geom_bar() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  #theme_hrbrmstr() + 
+  theme(legend.position = "bottom") +
+  labs(title = "Age, No Income",
+       # subtitle = "No Income",
+       caption = "source: www.kaggle.com",
+       x = "Age",
+       y = "")
+```
+
+The number of dependants also appears normal with no particular section of the population that has no income.
+
+```{r zero-income-ndependants}
+clean_tr %>%
+  filter(monthlyIncome == 0) %>%
+  ggplot(aes(nDependents, fill = seriousDlqin)) +
+  geom_bar() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  #theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Number of Dependants, No Income",
+       # subtitle = "No Income",
+       caption = "source: www.kaggle.com",
+       x = "Age",
+       y = "")
+```
+
 ```
 
 
