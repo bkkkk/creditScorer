@@ -81,14 +81,98 @@ clean_tr %>%
 
 As mentioned before about 2% of the entries have no information about the number of dependants. At this point this data is simply ignored, no attempt is made to infer this missing data.
 
-```{r}
-nacols <- function(df) {
-  unlist(lapply(df, function(x) any(is.na(x))))
-}
+### Times borrowers 30-59 days past due date
 
-nacols_name <- function(df) {
-  colnames(df)[nacols(df)]
-}
+This variables describes the number of times the borrower has failed to pay 30 to 59 days past the due date but no more.
+
+```{r past-due-30-dirty}
+clean_tr %>%
+  ggplot(aes(pastDue30, fill = seriousDlqin)) + geom_bar() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  # theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Times Past Due (30-59 Days)",
+       # subtitle = "Distribution bulk",
+       x = "Times Past Due",
+       y = "")
+```
+
+This variable contains a few entries at 96 and 98, these are likely encodings for missing values or other special cases. A value of 96 or 98 in one pastDue variable coincides with 96 or 98 value in the other two pastDue variables. 5 out of all borrowers in the data have a status code 96, while 264 have a past due value code of 98. Having these values be the same across pastDue variables suggest these are status codes. These are likely associated with borrowers that refused to provide the information or are new to the company collecting the data.
+
+Since these observations make up a small portion of the data, the status codes were simply replaced with the median of the rest of the pastDue distribution.
+
+```{r past-due-30-cleam}
+clean_tr %>%
+  clean_credit_score_pastDue30() %>%
+  ggplot(aes(pastDue30, fill = seriousDlqin)) + geom_bar() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  # theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Times Past Due (30-59 Days)",
+       # subtitle = "Distribution bulk",
+       x = "Times Past Due",
+       y = "")
+```
+
+### Times borrowers 60-89 days past due date
+
+Similar to the aforementioned variable except for a period of 60 to 89 past the due date and no more.
+
+```{r past-due-60-dirty}
+clean_tr %>%
+  ggplot(aes(pastDue60, fill = seriousDlqin)) + geom_bar() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  # theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Times Past Due (60-89 Days)",
+       x = "Times Past Due",
+       y = "")
+```
+
+We take the same procedure here to remove entries with value 96 and 98.
+
+```{r past-due-60-clean}
+clean_tr %>%
+  clean_credit_score_pastDue60() %>%
+  ggplot(aes(pastDue60, fill = seriousDlqin)) + geom_bar() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  # theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Times Past Due (60-89 Days)",
+       x = "Times Past Due",
+       y = "")
+```
+
+### Times more than 90 days past due
+
+The number of times the borrower has failed to make a payment 90 days past the due date.
+
+```{r}
+clean_tr %>%
+  ggplot(aes(pastDue90, fill = seriousDlqin)) + geom_bar() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  # theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Times Past Due (90+ Days)",
+# subtitle = "Distribution bulk",
+       caption = "source: www.kaggle.com",
+       x = "Times Past Due",
+       y = "")
+```
+
+We take the same procedure here to remove entries with value 96 and 98.
+
+```{r past-due-90-clean}
+clean_tr %>%
+  clean_credit_score_pastDue90() %>%
+  ggplot(aes(pastDue90, fill = seriousDlqin)) + geom_bar() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  # theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Times Past Due (90+ Days)",
+       caption = "source: www.kaggle.com",
+       x = "Times Past Due",
+       y = "")
 ```
 
 ## Problem statement
