@@ -8,7 +8,7 @@ library(hrbrmisc)
 
 source("R/01-load.R") # raw_tr
 source("R/02-clean.R") # clean_tr
-source("R/03-fixBad.R") # imputed_tr
+source("R/03-treatBad.R") # imputed_tr
 
 ## TODO:: Look into this!!
 
