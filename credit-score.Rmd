@@ -359,6 +359,25 @@ clean_tr %>%
 
 Without a clear understanding of the relationship between debt ratio and monthly income, imputation of the monthly income variables is no possible. It is thus decided that entries with missing monthly incomes will simply be dropped.
 
+### Revolving utilization of unsecured credit lines
+
+This is a measure of the credit balance as a portion of the total credit limit, this is presented as a percentage. Measurements should therefore lie between 0% and 100%. Shown below is the bulk of the distribution but once again note that there are large outliers here above this range.
+
+```{r}
+clean_tr %>%
+  ggplot(aes(fill = seriousDlqin, unsecuredUtil)) + geom_histogram() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  #theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(labels = percent, limits = c(0, 1.5)) +
+  labs(title = "Credit Balance over Credit Limit",
+       # subtitle = "Total balance on personal lines of credit over credit limit",
+       caption = "source: www.kaggle.com",
+       x = "Percentage of Credit Limit",
+       y = "")
+```
+
+Removing these outliers once again requires some domain knowledge to do correctly particularly since it likely interacts with other values in the dataset.
 
 ```{r}
 
