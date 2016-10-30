@@ -196,31 +196,19 @@ This distribution is surprisingly well behaved following and almost gaussian dis
 
 ```
 
-Two datasets were used for this study one for training and one for testing with `r nrow(training)` and `r nrow(testing)` entries respectively. Each set includes 10 predictors, with the training set also including a response variable. These include information about the borrower's income, age, and number of dependants; number of lines of credit; and how many times the borrower missed a due date by as much as 60, 90, or more than 90 days. The full list of variables is included at the end of the report.
 
-The training dataset contains `r sum(nacols(training))` predictors with missing values, namely `r nacols_name(training)` with `r sum(is.na(training))` entries in the dataset containing missing values. Missing values are very prevalent and should be considered in the rest of the study.
 
-## Data summary and potential outliers
 
-A data summary shows that the dataset contains a wide range of borrowers in age (21 to 109), income (no income to 3 million), and number of dependants (upto 20).
 
-Some potential outlier cases in the data include a borrower with a monthly income of 3 million, another with 20 dependants, and a borrower with a recorded age of zero. The last case is likely a misrecorded event. As expected these are not typical cases as distributions below show: 
 
 ```{r}
-training %>%
-  ggplot(aes(nDependants)) + geom_bar()
 
-training %>%
-  ggplot(aes(age)) + geom_bar()
 ```
 
-The dataset includes `r sum(na.omit(training$monthlyIncome)>1000000)` entries with a monthly income about 1 million
-
-##
 
 
 
-## Variable list
+
 
 | Name | Desc | Type |
 | SeriousDlqin2yrs | Person experienced 90 days past due delinquency or worse | boolean |
