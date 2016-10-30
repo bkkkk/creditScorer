@@ -415,11 +415,12 @@ clean_tr %>%
   theme(legend.position = "")
 ```
 
+## Training a Model
+
+For the sake of this analysis a random forest classifier was chosen. In particular, research shows that this is a reliable method applied in this domain.
+
+```{r simple-model}
+
+```
 
 
-
-
-
-| Name | Desc | Type |
-| SeriousDlqin2yrs | Person experienced 90 days past due delinquency or worse | boolean |
-| RevolvingUtilizationOfUnsecuredLines | Total Balan ||
