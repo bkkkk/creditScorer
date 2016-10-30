@@ -291,11 +291,73 @@ clean_tr %>%
        y = "")
 ```
 
+### Debt Ratio
+
+The debt ratio is defined as the ratio of total monthly debt payments to total monthly income. This distribution exhibits a strange shape, below unity the distribution appears to be somewhat well-behaved. The majority of borrowers use a certain portion of their monthly income to pay for debt. However there is a second part of the population that have a debt ratio in the 1000s. So what is going on here?
+
+```{r debt-ratio-dirty}
+clean_tr %>%
+  select(seriousDlqin, debtRatio) %>%
+  ggplot(aes(debtRatio, fill = seriousDlqin)) +
+  geom_histogram() +
+  geom_vline(xintercept  = 1) +
+  scale_x_log10() +
+  theme(legend.position = "") +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  #theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Debt Ratio",
+       subtitle = "Bulk",
+       caption = "source: www.kaggle.com",
+       x = "Monthly Income",
+       y = "")
 ```
 
+The debt ratio is closely related to the monthly income variable, which contains a number of high-earners, some potentially suspect entries at no income, and about 20% missing entries.
 
+First, removing the missing values substaintially reduces the number of borrowers which have a larger than 1 debt ratio suggesting that there is some interplay between missing values and the higher than expected debt ratios.
 
+It is possible that the debt ratio is calculated using the recorded monthly income, and in the cases where this value is missing some imputation procedure is used that results in extremely high debt ratios. For example, it's possible that all missing monthly incomes were replaced with unity in the debt ratio calculation and the entries in the distribution are actually the debt amount rather than the debt ratio.
 
+```{r debt-ratio-no-na}
+clean_tr %>%
+  filter(!is.na(monthlyIncome)) %>%
+  select(seriousDlqin, debtRatio) %>%
+  ggplot(aes(debtRatio, fill = seriousDlqin)) +
+  geom_histogram(binwidth = 0.02) +
+  geom_vline(xintercept  = 1) +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  #theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Debt Ratio",
+       subtitle = "Bulk",
+       caption = "source: www.kaggle.com",
+       x = "Monthly Income",
+       y = "")
+```
+
+Sanitizing the data further by removing entries with no income also reduces the population at very high debt ratios. In this case however there is less justification for doing so. It is possible for borrowers to have no income at all, though again a peak at exactly zero with little occupancy in the adjacent bins is suspect.
+
+```{r debt-ratio-no-na-more1}
+clean_tr %>%
+  filter(!is.na(monthlyIncome)) %>%
+  select(seriousDlqin, debtRatio) %>%
+  ggplot(aes(debtRatio, fill = seriousDlqin)) +
+  geom_histogram(binwidth = 0.02) +
+  geom_vline(xintercept  = 1) +
+  theme(legend.position = "") +
+  xlim(0, 1.5) +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  #theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Debt Ratio",
+       # subtitle = "Distribution Bulk",
+       caption = "source: www.kaggle.com",
+       x = "Debt Ratio",
+       y = "")
+```
+
+Without a clear understanding of the relationship between debt ratio and monthly income, imputation of the monthly income variables is no possible. It is thus decided that entries with missing monthly incomes will simply be dropped.
 
 
 ```{r}
