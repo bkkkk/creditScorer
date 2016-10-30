@@ -28,6 +28,43 @@ Two datasets were used for this study one for training and one for testing with 
 The training dataset contains `r sum(nacols(raw_tr))` predictors with missing values, namely `r nacols_name(raw_tr)` with `r sum(is.na(raw_tr))` entries in the dataset containing missing values.
 
 Specifically, `r nacol_percent(raw_tr$MonthlyIncome)`% of the monthly income data is missing while `r nacol_percent(raw_tr$NumberOfDependents)` of the entries are missing the measurement of the number of dependents.
+
+## Data exploration
+
+A data summary shows that the dataset contains a wide range of borrowers in age (21 to 109), income (no income to 3 million), and number of dependants (upto 20).
+
+The dataset contains an overwhelming majority of negative examples, `r 100*mutate(count(clean_tr, seriousDlqin), occ = n/sum(n))$occ[1]`% of the data corresponds to clients who have not failed to make a payment within 90 days of the due date in the last two years.
+
+### Age
+
+As mentioned before the borrowers in the data represent a wide cross-section of the population. The age distribution shows that borrows as young as 21 and as old as 90+ are included in the dataset.
+
+```{r age-dirty}
+clean_tr %>%
+  ggplot(aes(age, fill = seriousDlqin)) +
+  geom_bar() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  # theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Applicant Age",
+       x = "Age",
+       y = "")
+```
+
+A single entry in the dataset was a misrecorded with an age of zero. This was corrected to the median age for the rest of the analysis.
+
+```{r age-clean}
+clean_tr %>%
+  clean_credit_score_age() %>%
+  ggplot(aes(age, fill = seriousDlqin)) + geom_bar() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  # theme_hrbrmstr() + 
+  theme(legend.position = "bottom") +
+  labs(title = "Applicant Age",
+       x = "Age",
+       y = "")
+```
+
 ```{r}
 nacols <- function(df) {
   unlist(lapply(df, function(x) any(is.na(x))))
