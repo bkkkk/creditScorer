@@ -175,28 +175,24 @@ clean_tr %>%
        y = "")
 ```
 
-## Problem statement
 
-Given a large data set of client financial information, attempt to determine if a given client will default on their payment.
+### Number of Credit lines and Loans
 
-## Dataset
+This is the number of credit lines and loans associated with the borrower.
 
 ```{r}
-training <- read_csv("./data/cs-training.csv")
-training <- training %>%
-  select(seriousDqlin = SeriousDlqin2yrs,
-         age = age,
-         nDependants = NumberOfDependents,
-         monthlyIncome = MonthlyIncome,
-         debtRatio = DebtRatio,
-         pastDue30 = `NumberOfTime30-59DaysPastDueNotWorse`,
-         pastDue60 = `NumberOfTime60-89DaysPastDueNotWorse`,
-         pastDue90 = NumberOfTimes90DaysLate,
-         revolvingUtil = RevolvingUtilizationOfUnsecuredLines,
-         openLines = NumberOfOpenCreditLinesAndLoans,
-         realEstateLines = NumberRealEstateLoansOrLines
-  )
+clean_tr %>%
+  ggplot(aes(nCreditsAndLoans, fill = seriousDlqin)) + geom_bar() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  # theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Number of Credits and Loans",
+       caption = "source: www.kaggle.com",
+       x = "Credits and Loans",
+       y = "")
+```
 
+This distribution is surprisingly well behaved following and almost gaussian distribution. There appear to be a few outlier entries with some borrowers having as many as 50+ loans and credit lines. Without any specific domain knowledge to suggest these should be removed, these entries will be left in.
 
 ```
 
