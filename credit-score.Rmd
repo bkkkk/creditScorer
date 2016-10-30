@@ -194,6 +194,24 @@ clean_tr %>%
 
 This distribution is surprisingly well behaved following and almost gaussian distribution. There appear to be a few outlier entries with some borrowers having as many as 50+ loans and credit lines. Without any specific domain knowledge to suggest these should be removed, these entries will be left in.
 
+### Number of estate loans and credit lines
+
+The number of estate loans and credit lines associated with the borrower.
+
+The distribution is fairly well-behaved but contains a long tail with some borrowers having as many as 20 estate loans or lines of credit. Without any specific domain knowledge to suggest how to deal with these, the choice was made to leave these in the data.
+
+```{r}
+clean_tr %>%
+  ggplot(aes(nEstateLoansOrLines, fill = seriousDlqin)) + geom_bar() +
+  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  # theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Number of Estate Loans or Lines",
+       caption = "source: www.kaggle.com",
+       x = "Loans and Lines",
+       y = "")
+```
+
 ```
 
 
