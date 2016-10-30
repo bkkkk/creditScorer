@@ -17,6 +17,17 @@ source("R/01-load.R")
 source("R/02-clean.R")
 ```
 
+## Problem statement
+
+Given a large data set of client financial information, attempt to determine if a given client will default on their payment. In this case the default payment is defined as failing to make a payment 90 days after the due date.
+
+## Dataset
+
+Two datasets were used for this study one for training and one for testing with `r nrow(raw_tr)` and `r nrow(raw_tr)` entries respectively. Each set includes 10 predictors, with the training set also including a response variable. These include information about the borrower's income, age, and number of dependants; number of lines of credit; and how many times the borrower missed a due date by as much as 60, 90, or more than 90 days. The full list of variables is included at the end of the report.
+
+The training dataset contains `r sum(nacols(raw_tr))` predictors with missing values, namely `r nacols_name(raw_tr)` with `r sum(is.na(raw_tr))` entries in the dataset containing missing values.
+
+Specifically, `r nacol_percent(raw_tr$MonthlyIncome)`% of the monthly income data is missing while `r nacol_percent(raw_tr$NumberOfDependents)` of the entries are missing the measurement of the number of dependents.
 ```{r}
 nacols <- function(df) {
   unlist(lapply(df, function(x) any(is.na(x))))
