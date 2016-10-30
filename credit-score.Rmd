@@ -9,6 +9,12 @@ library(randomForest)
 library(readr)
 library(dplyr)
 library(ggplot2)
+library(scales)
+
+source("R/func-NA.R")
+source("R/func-clean.R")
+source("R/01-load.R")
+source("R/02-clean.R")
 ```
 
 ```{r}
