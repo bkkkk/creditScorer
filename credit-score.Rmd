@@ -65,6 +65,22 @@ clean_tr %>%
        y = "")
 ```
 
+### Number of Dependents
+
+This variable describes the number of dependants registered under the borrower. As expected, the majority of borrowers have less than 3 dependants, with the number of borrowers decreasing rapidly with number of dependants. There are a number of 
+
+```{r number-of-deps}
+clean_tr %>%
+  ggplot(aes(seriousDlqin, nDependents)) + geom_boxplot() +
+  # theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Number of Dependants",
+       x = "Defaulted on payment?",
+       y = "Number of Dependants")
+```
+
+As mentioned before about 2% of the entries have no information about the number of dependants. At this point this data is simply ignored, no attempt is made to infer this missing data.
+
 ```{r}
 nacols <- function(df) {
   unlist(lapply(df, function(x) any(is.na(x))))
