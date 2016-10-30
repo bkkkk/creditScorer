@@ -379,8 +379,40 @@ clean_tr %>%
 
 Removing these outliers once again requires some domain knowledge to do correctly particularly since it likely interacts with other values in the dataset.
 
-```{r}
+## Besides the Credit Score
 
+Given this data it is interesting to explore other trends in the financial identity of the borrower population. For example, here the relationship between age and income, and age and number of dependants are examined.
+
+The distribution of the average monthly income as a function of the age shows and interesting tred. Average monthly income rises with age until the 60s and then slowly begins to drop again. This makes some sense, generally a person will be promoted gaining extra monthly income until their retirement later in life resulting in a drop of income.
+
+```{r}
+clean_tr %>%
+  select(age, monthlyIncome) %>%
+  filter(age != 0) %>%
+  na.omit() %>%
+  group_by(age) %>%
+  summarize(monthlyIncome = mean(monthlyIncome)) %>%
+  ggplot(aes(age, monthlyIncome)) +
+  geom_point() +
+  labs(x = "Age", y = "Avg. Monthly Income") +
+  # theme_hrbrmstr() +
+  theme(legend.position = "") 
+```
+
+It also appears that the average number of dependants varies with age. Once again as expected, older borrowers tend to have more dependants, until approxmiately 45 years of age where their dependants, likely children, become independants and stop being declared in financial paperwork.
+
+```{r}
+clean_tr %>%
+  select(age, nDependents) %>%
+  filter(age != 0) %>%
+  na.omit() %>%
+  group_by(age) %>%
+  summarize(avgDeps = mean(nDependents)) %>%
+  ggplot(aes(age, avgDeps)) +
+  geom_point() +
+  xlab("Age") + ylab("Avg. Number of Dependants") +
+  # theme_hrbrmstr() +
+  theme(legend.position = "")
 ```
 
 
