@@ -63,7 +63,6 @@ clean_credit_score_pastDue90 <- function(data) {
 clean_credit_score_data <- function(data) {
   data <- rename(
     data,
-    seriousDlqin = SeriousDlqin2yrs,
     age = age,
     nDependents = NumberOfDependents,
     monthlyIncome = MonthlyIncome,
@@ -75,6 +74,12 @@ clean_credit_score_data <- function(data) {
     nCreditsAndLoans = NumberOfOpenCreditLinesAndLoans,
     nEstateLoansOrLines = NumberRealEstateLoansOrLines
   )
+
+  return(data)
+}
+
+clean_credit_score_training <- function(data) {
+  data <- rename(data, seriousDlqin = SeriousDlqin2yrs)
   data <- mutate(data, seriousDlqin = as.factor(seriousDlqin))
 
   return(data)
