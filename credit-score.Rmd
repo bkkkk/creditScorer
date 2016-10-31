@@ -10,11 +10,13 @@ library(readr)
 library(dplyr)
 library(ggplot2)
 library(scales)
+library(caret)
 
 source("R/func-NA.R")
 source("R/func-clean.R")
 source("R/01-load.R")
 source("R/02-clean.R")
+source("R/03-treatBad.R")
 ```
 
 ## Problem statement
@@ -417,10 +419,72 @@ clean_tr %>%
 
 ## Training a Model
 
-For the sake of this analysis a random forest classifier was chosen. In particular, research shows that this is a reliable method applied in this domain.
+For the sake of this analysis a random forest classifier was chosen. In particular, research shows that this is a reliable method applied in this domain. The hyper-parameter mtry, the number of variables to test at each node is optimized using a gradient search and 5-fold cross-validation.
 
-```{r simple-model}
+```{r rf-nominal-train eval=FALSE}
+trainControl <- trainControl(method = "cv", number = 5, summaryFunction = twoClassSummary,
+  classProbs = TRUE)
 
+model <- train(seriousDlqin ~ .,
+               data = imputed_tr,
+               method = "ranger",
+               trControl = trainControl,
+               verbose = TRUE)
+
+save(model, file = "data/model.Rdata")
 ```
 
+```{r include=FALSE}
+load("data/model.Rdata")
+```
+
+The best value for the parameter is found to be 2, however the confusion matrix reveals a problem:
+
+```{r nominal-confusion-matrix}
+confusionMatrix(model$finalModel$confusion.matrix)
+```
+
+The class of interest is grossly misidentified. This could be due to the imbalance in the data, the "has failed to pay within 90 days" class is only 7% of the data. Downsampling results in too few instances of both classes, so here the data was upsampled. The random forest was retrained on the new upsampled data and the new confusion matrix was created:
+
+```{r upsampled-train eval=FALSE}
+levels(imputed_tr$seriousDlqin) <- c("Paid", "Defaulted")
+
+upSampled <- upSample(x = imputed_tr %>% select(-seriousDlqin), y = imputed_tr$seriousDlqin)
+
+model_fixed <- train(
+  x = as.matrix(upSampled %>% select(-Class)),
+  y = upSampled$Class,
+  method = "ranger",
+  trControl = trainControl,
+  verbose = TRUE,
+  tuneGrid = expand.grid(mtry = c(2)),
+  num.trees = 200,
+  metric = "ROC"
+)
+
+model_with_prob <- model_fixed
+
+save(model_fixed, file = "data/balanced.Rdata")
+save(model_with_prob, file = "data/balanced_prob.Rdata")
+```
+
+```{r include=FALSE}
+load("data/balanced.Rdata")
+```
+
+```{r}
+caret::getTrainPerf(model_fixed)
+```
+
+As can be seen the rebalanced classes result in much better identification of the cases where borrowers defaulted on their payments. Identification of the "success" cases has decreased somewhat however now the cases of interest are identified correctly.
+
+Lets the
+
+```{r testing-prediction}
+preds <- predict(model_fixed$finalModel, imputed_te)
+
+predictions <- preds$predictions
+
+imputed_te
+```
 
