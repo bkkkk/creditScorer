@@ -414,6 +414,8 @@ clean_tr %>%
 For the sake of this analysis a random forest classifier was chosen. In particular, research shows that this is a reliable method applied in this domain. The hyper-parameter mtry, the number of variables to test at each node is optimized using a gradient search and 5-fold cross-validation.
 
 ```{r rf-nominal-train, eval=FALSE}
+remove(list = c("clean_tr", "raw_tr", "raw_te"))
+
 mlMethod <- "ranger"
 
 trainControl <- trainControl(method = "cv", number = 5, summaryFunction = twoClassSummary,
