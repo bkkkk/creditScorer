@@ -74,7 +74,7 @@ clean_tr %>%
 
 A single entry in the dataset was a misrecorded with an age of zero. This was corrected to the median age for the rest of the analysis.
 
-```{r age-clean}
+```{r age-clean, message=FALSE}
 clean_tr %>%
   clean_credit_score_age() %>%
   ggplot(aes(age, fill = seriousDlqin)) + geom_bar() +
@@ -168,7 +168,7 @@ clean_tr %>%
 
 The number of times the borrower has failed to make a payment 90 days past the due date.
 
-```{r}
+```{r past-due-90}
 clean_tr %>%
   ggplot(aes(pastDue90, fill = seriousDlqin)) + geom_bar() +
   scale_fill_delinquent() +
@@ -201,7 +201,7 @@ clean_tr %>%
 
 This is the number of credit lines and loans associated with the borrower.
 
-```{r}
+```{r credit-and-loans}
 clean_tr %>%
   ggplot(aes(nCreditsAndLoans, fill = seriousDlqin)) + geom_bar() +
   scale_fill_delinquent() +
@@ -221,7 +221,7 @@ The number of estate loans and credit lines associated with the borrower.
 
 The distribution is fairly well-behaved but contains a long tail with some borrowers having as many as 20 estate loans or lines of credit. Without any specific domain knowledge to suggest how to deal with these, the choice was made to leave these in the data.
 
-```{r}
+```{r estate-loans-or-lines-dirty}
 clean_tr %>%
   ggplot(aes(nEstateLoansOrLines, fill = seriousDlqin)) + geom_bar() +
   scale_fill_delinquent() +
@@ -261,7 +261,7 @@ The dataset also includes `r sum(clean_tr$monthlyIncome > 30000, na.rm = T)` hig
 
 Interestingly, there also seems to be two peaks at zero and 1 incomes, as can been seen from the distribution below this does not fit the rest of the distribution. It is hard to suggest what could be happening here. This could be mismeasurement where some records are simply missing but were not marked as N/A, another possibility is that 0 and 1 are used as dummy codes. Finally, it is possible that some people simply have no income at all. If there were borrowers with no income one would expect a smooth tail towards zero, having a large peak at zero is highly suspect.
 
-```{r}
+```{r monthly-income-lowend}
 clean_tr %>%
   select(seriousDlqin, monthlyIncome) %>%
   na.omit() %>%
@@ -383,7 +383,7 @@ Without a clear understanding of the relationship between debt ratio and monthly
 
 This is a measure of the credit balance as a portion of the total credit limit, this is presented as a percentage. Measurements should therefore lie between 0% and 100%. Shown below is the bulk of the distribution but once again note that there are large outliers here above this range.
 
-```{r}
+```{r revolving-util-dirty}
 clean_tr %>%
   ggplot(aes(fill = seriousDlqin, unsecuredUtil)) + geom_histogram() +
   scale_fill_delinquent() +
@@ -405,7 +405,7 @@ Given this data it is interesting to explore other trends in the financial ident
 
 The distribution of the average monthly income as a function of the age shows and interesting tred. Average monthly income rises with age until the 60s and then slowly begins to drop again. This makes some sense, generally a person will be promoted gaining extra monthly income until their retirement later in life resulting in a drop of income.
 
-```{r}
+```{r age-vs-monthly-income}
 clean_tr %>%
   select(age, monthlyIncome) %>%
   filter(age != 0) %>%
@@ -421,7 +421,7 @@ clean_tr %>%
 
 It also appears that the average number of dependants varies with age. Once again as expected, older borrowers tend to have more dependants, until approxmiately 45 years of age where their dependants, likely children, become independants and stop being declared in financial paperwork.
 
-```{r}
+```{r age-vs-ndeps}
 clean_tr %>%
   select(age, nDependents) %>%
   filter(age != 0) %>%
