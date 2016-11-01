@@ -112,10 +112,7 @@ clean_tr %>%
   scale_fill_delinquent() +
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
-  labs(title = "Times Past Due (30-59 Days)",
-       # subtitle = "Distribution bulk",
-       x = "Times Past Due",
-       y = "")
+  labs(title = "Times Past Due (30-59 Days)", x = "Times Past Due", y = "")
 ```
 
 This variable contains a few entries at 96 and 98, these are likely encodings for missing values or other special cases. A value of 96 or 98 in one pastDue variable coincides with 96 or 98 value in the other two pastDue variables. 5 out of all borrowers in the data have a status code 96, while 264 have a past due value code of 98. Having these values be the same across pastDue variables suggest these are status codes. These are likely associated with borrowers that refused to provide the information or are new to the company collecting the data.
@@ -130,7 +127,6 @@ clean_tr %>%
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (30-59 Days)",
-       # subtitle = "Distribution bulk",
        x = "Times Past Due",
        y = "")
 ```
@@ -175,7 +171,6 @@ clean_tr %>%
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (90+ Days)",
-# subtitle = "Distribution bulk",
        caption = "source: www.kaggle.com",
        x = "Times Past Due",
        y = "")
@@ -249,7 +244,7 @@ clean_tr %>%
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Monthly Income",
-       # subtitle = "Distribution Bulk",
+       subtitle = "Bulk",
        caption = "source: www.kaggle.com",
        x = "Monthly Income",
        y = "")
@@ -272,7 +267,7 @@ clean_tr %>%
   #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Monthly Income",
-       # subtitle = "Distribution Bulk",
+       subtitle = "Distribution Bulk",
        caption = "source: www.kaggle.com",
        x = "Monthly Income",
        y = "")
@@ -288,8 +283,8 @@ clean_tr %>%
   scale_fill_delinquent() +
   #theme_hrbrmstr() + 
   theme(legend.position = "bottom") +
-  labs(title = "Age, No Income",
-       # subtitle = "No Income",
+  labs(title = "Age",
+       subtitle = "No Income",
        caption = "source: www.kaggle.com",
        x = "Age",
        y = "")
@@ -305,10 +300,10 @@ clean_tr %>%
   scale_fill_delinquent() +
   #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
-  labs(title = "Number of Dependants, No Income",
-       # subtitle = "No Income",
+  labs(title = "Number of Dependants",
+       subtitle = "No Income",
        caption = "source: www.kaggle.com",
-       x = "Age",
+       x = "Number of Dependants",
        y = "")
 ```
 
@@ -351,9 +346,8 @@ clean_tr %>%
   #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Debt Ratio",
-       subtitle = "Bulk",
        caption = "source: www.kaggle.com",
-       x = "Monthly Income",
+       x = "Log Debt Ratio",
        y = "")
 ```
 
@@ -371,9 +365,9 @@ clean_tr %>%
   #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Debt Ratio",
-       # subtitle = "Distribution Bulk",
+       subtitle = "Bulk",
        caption = "source: www.kaggle.com",
-       x = "Debt Ratio",
+       x = "Log Debt Ratio",
        y = "")
 ```
 
