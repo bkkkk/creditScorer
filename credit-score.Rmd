@@ -65,7 +65,6 @@ clean_tr %>%
   ggplot(aes(age, fill = seriousDlqin)) +
   geom_bar() +
   scale_fill_delinquent() +
-  # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Applicant Age",
        x = "Age",
@@ -79,7 +78,6 @@ clean_tr %>%
   clean_credit_score_age() %>%
   ggplot(aes(age, fill = seriousDlqin)) + geom_bar() +
   scale_fill_delinquent() +
-  # theme_hrbrmstr() + 
   theme(legend.position = "bottom") +
   labs(title = "Applicant Age",
        x = "Age",
@@ -93,7 +91,6 @@ This variable describes the number of dependants registered under the borrower. 
 ```{r number-of-deps}
 clean_tr %>%
   ggplot(aes(seriousDlqin, nDependents)) + geom_boxplot() +
-  # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Number of Dependants",
        x = "Defaulted on payment?",
@@ -110,7 +107,6 @@ This variables describes the number of times the borrower has failed to pay 30 t
 clean_tr %>%
   ggplot(aes(pastDue30, fill = seriousDlqin)) + geom_bar() +
   scale_fill_delinquent() +
-  # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (30-59 Days)", x = "Times Past Due", y = "")
 ```
@@ -124,7 +120,6 @@ clean_tr %>%
   clean_credit_score_pastDue30() %>%
   ggplot(aes(pastDue30, fill = seriousDlqin)) + geom_bar() +
   scale_fill_delinquent() +
-  # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (30-59 Days)",
        x = "Times Past Due",
@@ -139,7 +134,6 @@ Similar to the aforementioned variable except for a period of 60 to 89 past the 
 clean_tr %>%
   ggplot(aes(pastDue60, fill = seriousDlqin)) + geom_bar() +
   scale_fill_delinquent() +
-  # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (60-89 Days)",
        x = "Times Past Due",
@@ -153,7 +147,6 @@ clean_tr %>%
   clean_credit_score_pastDue60() %>%
   ggplot(aes(pastDue60, fill = seriousDlqin)) + geom_bar() +
   scale_fill_delinquent() +
-  # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (60-89 Days)",
        x = "Times Past Due",
@@ -168,7 +161,6 @@ The number of times the borrower has failed to make a payment 90 days past the d
 clean_tr %>%
   ggplot(aes(pastDue90, fill = seriousDlqin)) + geom_bar() +
   scale_fill_delinquent() +
-  # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (90+ Days)",
        caption = "source: www.kaggle.com",
@@ -183,7 +175,6 @@ clean_tr %>%
   clean_credit_score_pastDue90() %>%
   ggplot(aes(pastDue90, fill = seriousDlqin)) + geom_bar() +
   scale_fill_delinquent() +
-  # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (90+ Days)",
        caption = "source: www.kaggle.com",
@@ -200,7 +191,6 @@ This is the number of credit lines and loans associated with the borrower.
 clean_tr %>%
   ggplot(aes(nCreditsAndLoans, fill = seriousDlqin)) + geom_bar() +
   scale_fill_delinquent() +
-  # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Number of Credits and Loans",
        caption = "source: www.kaggle.com",
@@ -220,7 +210,6 @@ The distribution is fairly well-behaved but contains a long tail with some borro
 clean_tr %>%
   ggplot(aes(nEstateLoansOrLines, fill = seriousDlqin)) + geom_bar() +
   scale_fill_delinquent() +
-  # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Number of Estate Loans or Lines",
        caption = "source: www.kaggle.com",
@@ -240,7 +229,6 @@ clean_tr %>%
   geom_histogram() +
   xlim(-1, 30000) +
   scale_fill_delinquent() +
-  # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Monthly Income",
        subtitle = "Bulk",
@@ -263,7 +251,6 @@ clean_tr %>%
   geom_histogram(binwidth = 1) +
   xlim(-2, 400) +
   scale_fill_delinquent() +
-  #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Monthly Income",
        subtitle = "Distribution Bulk",
@@ -280,7 +267,6 @@ clean_tr %>%
   ggplot(aes(age, fill = seriousDlqin)) +
   geom_bar() +
   scale_fill_delinquent() +
-  #theme_hrbrmstr() + 
   theme(legend.position = "bottom") +
   labs(title = "Age",
        subtitle = "No Income",
@@ -297,7 +283,6 @@ clean_tr %>%
   ggplot(aes(nDependents, fill = seriousDlqin)) +
   geom_bar() +
   scale_fill_delinquent() +
-  #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Number of Dependants",
        subtitle = "No Income",
@@ -319,7 +304,6 @@ clean_tr %>%
   scale_x_log10() +
   theme(legend.position = "") +
   scale_fill_delinquent() +
-  #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Debt Ratio",
        subtitle = "Bulk",
@@ -343,7 +327,6 @@ clean_tr %>%
   scale_x_log10() +
   geom_vline(xintercept  = 1) +
   scale_fill_delinquent() +
-  #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Debt Ratio",
        caption = "source: www.kaggle.com",
@@ -364,7 +347,6 @@ clean_tr %>%
   geom_vline(xintercept  = 1) +
   theme(legend.position = "") +
   scale_fill_delinquent() +
-  #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Debt Ratio",
        subtitle = "Bulk",
@@ -383,11 +365,9 @@ This is a measure of the credit balance as a portion of the total credit limit, 
 clean_tr %>%
   ggplot(aes(fill = seriousDlqin, unsecuredUtil)) + geom_histogram() +
   scale_fill_delinquent() +
-  #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   scale_x_continuous(labels = percent, limits = c(0, 1.5)) +
   labs(title = "Credit Balance over Credit Limit",
-       # subtitle = "Total balance on personal lines of credit over credit limit",
        caption = "source: www.kaggle.com",
        x = "Percentage of Credit Limit",
        y = "")
@@ -411,7 +391,6 @@ clean_tr %>%
   ggplot(aes(age, monthlyIncome)) +
   geom_point() +
   labs(x = "Age", y = "Avg. Monthly Income") +
-  # theme_hrbrmstr() +
   theme(legend.position = "") 
 ```
 
@@ -427,7 +406,6 @@ clean_tr %>%
   ggplot(aes(age, avgDeps)) +
   geom_point() +
   xlab("Age") + ylab("Avg. Number of Dependants") +
-  # theme_hrbrmstr() +
   theme(legend.position = "")
 ```
 
