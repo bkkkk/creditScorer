@@ -356,6 +356,7 @@ Sanitizing the data further by removing entries with no income also reduces the 
 ```{r debt-ratio-no-na-more1}
 clean_tr %>%
   filter(!is.na(monthlyIncome)) %>%
+  filter(monthlyIncome > 1) %>%
   select(seriousDlqin, debtRatio) %>%
   ggplot(aes(debtRatio, fill = seriousDlqin)) +
   geom_histogram() +
