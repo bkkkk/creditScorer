@@ -465,6 +465,9 @@ confusionMatrix(model$finalModel$confusion.matrix)
 The class of interest is grossly misidentified. This could be due to the imbalance in the data, the "has failed to pay within 90 days" class is only 7% of the data. Downsampling results in too few instances of both classes, so here the data was upsampled. The random forest was retrained on the new upsampled data and the new confusion matrix was created:
 
 ```{r upsampled-train, eval=FALSE}
+num.trees <- 200
+customTuneGrid <- expand.grid(mtry = c(2))
+
 upSampled <- upSample(x = select(imputed_tr, -seriousDlqin), y = imputed_tr$seriousDlqin, yname = seriousDlqin)
 upSampledPredictors <- as.matrix(select(upSampled, -seriousDlqin))
 upSampledResponse <- upSampled$seriousDlqin
@@ -475,8 +478,8 @@ model_fixed <- train(
   method = mlMethod,
   trControl = trainControl,
   verbose = TRUE,
-  tuneGrid = expand.grid(mtry = c(2)),
-  num.trees = 200
+  tuneGrid = customTuneGrid,
+  num.trees = num.trees
 )
 
 model_with_prob <- train(
@@ -485,8 +488,8 @@ model_with_prob <- train(
   method = mlMethod,
   trControl = trainControl,
   verbose = TRUE,
-  tuneGrid = expand.grid(mtry = c(2)),
-  num.trees = 200,
+  tuneGrid = customTuneGrid,
+  num.trees = num.trees,
   metric = "ROC"
 )
 
