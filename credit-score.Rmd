@@ -474,11 +474,19 @@ model_fixed <- train(
   trControl = trainControl,
   verbose = TRUE,
   tuneGrid = expand.grid(mtry = c(2)),
+  num.trees = 200
+)
+
+model_with_prob <- train(
+  x = as.matrix(upSampled %>% select(-Class)),
+  y = upSampled$Class,
+  method = "ranger",
+  trControl = trainControl,
+  verbose = TRUE,
+  tuneGrid = expand.grid(mtry = c(2)),
   num.trees = 200,
   metric = "ROC"
 )
-
-model_with_prob <- model_fixed
 
 save(model_fixed, file = "data/balanced.Rdata")
 save(model_with_prob, file = "data/balanced_prob.Rdata")
