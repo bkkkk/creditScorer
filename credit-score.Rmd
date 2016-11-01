@@ -64,7 +64,7 @@ As mentioned before the borrowers in the data represent a wide cross-section of 
 clean_tr %>%
   ggplot(aes(age, fill = seriousDlqin)) +
   geom_bar() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Applicant Age",
@@ -78,7 +78,7 @@ A single entry in the dataset was a misrecorded with an age of zero. This was co
 clean_tr %>%
   clean_credit_score_age() %>%
   ggplot(aes(age, fill = seriousDlqin)) + geom_bar() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   # theme_hrbrmstr() + 
   theme(legend.position = "bottom") +
   labs(title = "Applicant Age",
@@ -109,7 +109,7 @@ This variables describes the number of times the borrower has failed to pay 30 t
 ```{r past-due-30-dirty}
 clean_tr %>%
   ggplot(aes(pastDue30, fill = seriousDlqin)) + geom_bar() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (30-59 Days)",
@@ -126,7 +126,7 @@ Since these observations make up a small portion of the data, the status codes w
 clean_tr %>%
   clean_credit_score_pastDue30() %>%
   ggplot(aes(pastDue30, fill = seriousDlqin)) + geom_bar() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (30-59 Days)",
@@ -142,7 +142,7 @@ Similar to the aforementioned variable except for a period of 60 to 89 past the 
 ```{r past-due-60-dirty}
 clean_tr %>%
   ggplot(aes(pastDue60, fill = seriousDlqin)) + geom_bar() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (60-89 Days)",
@@ -156,7 +156,7 @@ We take the same procedure here to remove entries with value 96 and 98.
 clean_tr %>%
   clean_credit_score_pastDue60() %>%
   ggplot(aes(pastDue60, fill = seriousDlqin)) + geom_bar() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (60-89 Days)",
@@ -171,7 +171,7 @@ The number of times the borrower has failed to make a payment 90 days past the d
 ```{r}
 clean_tr %>%
   ggplot(aes(pastDue90, fill = seriousDlqin)) + geom_bar() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (90+ Days)",
@@ -187,7 +187,7 @@ We take the same procedure here to remove entries with value 96 and 98.
 clean_tr %>%
   clean_credit_score_pastDue90() %>%
   ggplot(aes(pastDue90, fill = seriousDlqin)) + geom_bar() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Times Past Due (90+ Days)",
@@ -204,7 +204,7 @@ This is the number of credit lines and loans associated with the borrower.
 ```{r}
 clean_tr %>%
   ggplot(aes(nCreditsAndLoans, fill = seriousDlqin)) + geom_bar() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Number of Credits and Loans",
@@ -224,7 +224,7 @@ The distribution is fairly well-behaved but contains a long tail with some borro
 ```{r}
 clean_tr %>%
   ggplot(aes(nEstateLoansOrLines, fill = seriousDlqin)) + geom_bar() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Number of Estate Loans or Lines",
@@ -245,7 +245,7 @@ clean_tr %>%
   ggplot(aes(monthlyIncome, fill = seriousDlqin)) +
   geom_histogram() +
   xlim(-1, 30000) +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   # theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Monthly Income",
@@ -285,7 +285,7 @@ clean_tr %>%
   filter(monthlyIncome == 0) %>%
   ggplot(aes(age, fill = seriousDlqin)) +
   geom_bar() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   #theme_hrbrmstr() + 
   theme(legend.position = "bottom") +
   labs(title = "Age, No Income",
@@ -302,7 +302,7 @@ clean_tr %>%
   filter(monthlyIncome == 0) %>%
   ggplot(aes(nDependents, fill = seriousDlqin)) +
   geom_bar() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Number of Dependants, No Income",
@@ -324,7 +324,7 @@ clean_tr %>%
   geom_vline(xintercept  = 1) +
   scale_x_log10() +
   theme(legend.position = "") +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Debt Ratio",
@@ -347,7 +347,7 @@ clean_tr %>%
   ggplot(aes(debtRatio, fill = seriousDlqin)) +
   geom_histogram(binwidth = 0.02) +
   geom_vline(xintercept  = 1) +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Debt Ratio",
@@ -367,8 +367,7 @@ clean_tr %>%
   geom_histogram(binwidth = 0.02) +
   geom_vline(xintercept  = 1) +
   theme(legend.position = "") +
-  xlim(0, 1.5) +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Debt Ratio",
@@ -387,7 +386,7 @@ This is a measure of the credit balance as a portion of the total credit limit, 
 ```{r}
 clean_tr %>%
   ggplot(aes(fill = seriousDlqin, unsecuredUtil)) + geom_histogram() +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   scale_x_continuous(labels = percent, limits = c(0, 1.5)) +
