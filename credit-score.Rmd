@@ -486,21 +486,93 @@ save(model_with_prob, file = "data/balanced_prob.Rdata")
 
 ```{r load-balanced-model-hidden, include=FALSE}
 load("data/balanced.Rdata")
+load("data/balanced_prob.Rdata")
 ```
 
-```{r}
-caret::getTrainPerf(model_fixed)
+```{r balanced-model-cf-matrix, include=FALSE}
+knitr::kable(model_fixed$finalModel$confusion.matrix)
+confusionMatrix(model_fixed$finalModel$confusion.matrix)
+model_with_prob
 ```
 
-As can be seen the rebalanced classes result in much better identification of the cases where borrowers defaulted on their payments. Identification of the "success" cases has decreased somewhat however now the cases of interest are identified correctly.
+As can be seen the rebalanced classes result in much better identification of the cases where borrowers defaulted on their payments. Identification of the "success" cases has decreased somewhat however the cases of interest are identified correctly.
 
-Lets the
+Lets look then at the variable importance as determined by the model:
+
+```{r variable-importance}
+importance_list <- data.frame(model_fixed$finalModel$variable.importance)
+importance_list$variable <- rownames(importance_list)
+rownames(importance_list) <- NULL
+names(importance_list) <- c("importance", "variable")
+
+importance_list %>%
+  select(variable, importance) %>%
+  arrange(desc(importance)) %>%
+  kable()
+```
+
+It appears that the amount of credit that has been used up is a strong indicator of potential for default, followed by the debt ratio. Both of these are somewhat predictable indicators, if you the majority of your income goes to paying debt, any sudden even which diverts funds away from debit payment will put significant strain on your ability to pay for loans.
+
+It's interesting to see that "pastDue30" days is a stronger indicator of potential default than the other two measures which represent far more severe failures of payment. It is possible that these variables are correlated to some extent. Some more analysis in this are might be interesting.
+
+Next, predictions are generated on the testing data based on this new model. Once the predictions are in place the top 3 predictors are examined. Note that the testing data has gone through the same variable imputation and column name cleaning as the training data.
 
 ```{r testing-prediction}
 preds <- predict(model_fixed$finalModel, imputed_te)
 
-predictions <- preds$predictions
+preds_col = preds$predictions
+level(preds_col) <- c("Paid", "Defaulted")
 
-imputed_te
+predicted_te <- imputed_te %>% mutate(seriousDlqin = preds_col) %>% select(seriousDlqin, everything()) %>% mutate()
+```
+
+
+```{r}
+predicted_te %>%
+  ggplot(aes(fill = seriousDlqin, unsecuredUtil)) + geom_histogram() +
+  scale_fill_delinquent() +
+  #theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(labels = percent, limits = c(0, 1.5)) +
+  labs(title = "Credit Balance over Credit Limit",
+       # subtitle = "Total balance on personal lines of credit over credit limit",
+       caption = "source: www.kaggle.com",
+       x = "Percentage of Credit Limit",
+       y = "")
+```
+
+
+```{r}
+predicted_te %>%
+  filter(!is.na(monthlyIncome)) %>%
+  select(seriousDlqin, debtRatio) %>%
+  ggplot(aes(debtRatio, fill = seriousDlqin)) +
+  geom_histogram() +
+  scale_x_log10() +
+  geom_vline(xintercept  = 1) +
+  theme(legend.position = "") +
+  scale_fill_delinquent() +
+  #theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Debt Ratio",
+       subtitle = "Bulk",
+       caption = "source: www.kaggle.com",
+       x = "Log Debt Ratio",
+       y = "")
+```
+
+```{r}
+predicted_te %>%
+  ggplot(aes(pastDue30, fill = seriousDlqin)) +
+  geom_bar() +
+  theme(legend.position = "") +
+  scale_fill_delinquent() +
+  #theme_hrbrmstr() +
+  theme(legend.position = "bottom") +
+  labs(title = "Times Past Due (30-59 Days)",
+       subtitle = "Bulk",
+       caption = "source: www.kaggle.com",
+       x = "Times Past Due",
+       y = "")
 ```
 
