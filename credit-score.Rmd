@@ -506,7 +506,7 @@ It appears that the amount of credit that has been used up is a strong indicator
 
 It's interesting to see that "pastDue30" days is a stronger indicator of potential default than the other two measures which represent far more severe failures of payment. It is possible that these variables are correlated to some extent. Some more analysis in this are might be interesting.
 
-Next, predictions are generated on the testing data based on this new model. Once the predictions are in place the top 3 predictors are examined. Note that the testing data has gone through the same variable imputation and column name cleaning as the training data.
+Next, predictions are generated on the testing data based on this new model. Once the predictions are in place the top 3 predictors are examined. Note that first the testing data has gone through the same variable imputation and column name cleaning as the training data.
 
 ```{r testing-prediction}
 imputed_te <- clean_te %>%
