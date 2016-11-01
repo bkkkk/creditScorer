@@ -500,10 +500,12 @@ save(model_with_prob, file = "data/balanced_prob.Rdata")
 ```{r load-balanced-model-hidden, include=FALSE}
 load("data/balanced.Rdata")
 load("data/balanced_prob.Rdata")
+
+finalModel <- model_fixed$finalModel
 ```
 
 ```{r balanced-model-cf-matrix, include=FALSE}
-confusionMatrix(model_fixed$finalModel$confusion.matrix)
+confusionMatrix(finalModel$confusion.matrix)
 ```
 
 As can be seen the rebalanced classes result in much better identification of the cases where borrowers defaulted on their payments. Identification of the "success" cases has decreased somewhat however the cases of interest are identified correctly.
@@ -511,7 +513,7 @@ As can be seen the rebalanced classes result in much better identification of th
 Lets look then at the variable importance as determined by the model:
 
 ```{r variable-importance}
-importance_list <- data.frame(model_fixed$finalModel$variable.importance)
+importance_list <- data.frame(finalModel$variable.importance)
 importance_list$variable <- rownames(importance_list)
 rownames(importance_list) <- NULL
 names(importance_list) <- c("importance", "variable")
@@ -529,7 +531,7 @@ It's interesting to see that "pastDue30" days is a stronger indicator of potenti
 Next, predictions are generated on the testing data based on this new model. Once the predictions are in place the top 3 predictors are examined. Note that the testing data has gone through the same variable imputation and column name cleaning as the training data.
 
 ```{r testing-prediction}
-preds <- predict(model_fixed$finalModel, imputed_te)
+preds <- predict(finalModel, imputed_te)
 
 preds_col = preds$predictions
 level(preds_col) <- c("Paid", "Defaulted")
