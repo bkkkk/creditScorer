@@ -519,7 +519,7 @@ imputed_te <- clean_te %>%
 preds <- predict(finalModel, imputed_te)
 
 preds_col = preds$predictions
-level(preds_col) <- c("Paid", "Defaulted")
+levels(preds_col) <- c("Paid", "Defaulted")
 
 predicted_te <- imputed_te %>% mutate(seriousDlqin = preds_col) %>% select(seriousDlqin, everything()) %>% mutate()
 ```
