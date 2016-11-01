@@ -262,7 +262,7 @@ clean_tr %>%
   ggplot(aes(monthlyIncome, fill = seriousDlqin)) +
   geom_histogram(binwidth = 1) +
   xlim(-2, 400) +
-  scale_fill_brewer(name = "Delinquent Past Due", type = "qual", palette = "Set1") +
+  scale_fill_delinquent() +
   #theme_hrbrmstr() +
   theme(legend.position = "bottom") +
   labs(title = "Monthly Income",
