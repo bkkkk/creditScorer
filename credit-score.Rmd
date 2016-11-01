@@ -228,7 +228,6 @@ clean_tr %>%
        y = "")
 ```
 
-
 ### Monthly Income
 
 The monthly income as the name suggest is the monthly income of the borrower. The range of values here is quite surprising, there are numerous borrowers with incomes in the millions. Given the range of values it is impossible to assume which currency is being used in the measurement. Shown below is only the bulk of the distribution.
