@@ -484,7 +484,7 @@ save(model_fixed, file = "data/balanced.Rdata")
 save(model_with_prob, file = "data/balanced_prob.Rdata")
 ```
 
-```{r include=FALSE}
+```{r load-balanced-model-hidden, include=FALSE}
 load("data/balanced.Rdata")
 ```
 
