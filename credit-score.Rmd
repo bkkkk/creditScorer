@@ -464,9 +464,10 @@ The class of interest is grossly misidentified. This could be due to the imbalan
 
 ```{r upsampled-train, eval=FALSE}
 upSampled <- upSample(x = select(imputed_tr, -seriousDlqin), y = imputed_tr$seriousDlqin)
+upSampledPredictors <- as.matrix(select(upSampled, -Class))
 
 model_fixed <- train(
-  x = as.matrix(select(upSampled, -Class)),
+  x = upSampledPredictors,
   y = upSampled$Class,
   method = "ranger",
   trControl = trainControl,
@@ -476,7 +477,7 @@ model_fixed <- train(
 )
 
 model_with_prob <- train(
-  x = as.matrix(select(upSampled, -Class)),
+  x = upSampledPredictors,
   y = upSampled$Class,
   method = "ranger",
   trControl = trainControl,
