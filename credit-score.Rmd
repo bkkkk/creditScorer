@@ -510,6 +510,7 @@ Next, predictions are generated on the testing data based on this new model. Onc
 
 ```{r testing-prediction}
 imputed_te <- clean_te %>%
+  select(-SeriousDlqin2yrs) %>%
   clean_credit_score_age() %>%
   clean_credit_score_pastDue30() %>%
   clean_credit_score_pastDue60() %>%
@@ -521,7 +522,10 @@ preds <- predict(finalModel, imputed_te)
 preds_col = preds$predictions
 levels(preds_col) <- c("Paid", "Defaulted")
 
-predicted_te <- imputed_te %>% mutate(seriousDlqin = preds_col) %>% select(seriousDlqin, everything()) %>% mutate()
+predicted_te <- imputed_te %>%
+  mutate(seriousDlqin = preds_col) %>%
+  select(seriousDlqin, everything()) %>%
+  mutate()
 ```
 
 
