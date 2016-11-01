@@ -81,6 +81,7 @@ clean_credit_score_data <- function(data) {
 clean_credit_score_training <- function(data) {
   data <- rename(data, seriousDlqin = SeriousDlqin2yrs)
   data <- mutate(data, seriousDlqin = as.factor(seriousDlqin))
+  levels(data$seriousDlqin) <- c("Paid", "Defaulted")
 
   return(data)
 }
