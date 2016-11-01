@@ -504,7 +504,6 @@ load("data/balanced_prob.Rdata")
 
 ```{r balanced-model-cf-matrix, include=FALSE}
 confusionMatrix(model_fixed$finalModel$confusion.matrix)
-model_with_prob
 ```
 
 As can be seen the rebalanced classes result in much better identification of the cases where borrowers defaulted on their payments. Identification of the "success" cases has decreased somewhat however the cases of interest are identified correctly.
