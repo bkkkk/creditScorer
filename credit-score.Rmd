@@ -339,7 +339,8 @@ clean_tr %>%
   filter(!is.na(monthlyIncome)) %>%
   select(seriousDlqin, debtRatio) %>%
   ggplot(aes(debtRatio, fill = seriousDlqin)) +
-  geom_histogram(binwidth = 0.02) +
+  geom_histogram() +
+  scale_x_log10() +
   geom_vline(xintercept  = 1) +
   scale_fill_delinquent() +
   #theme_hrbrmstr() +
@@ -357,7 +358,8 @@ clean_tr %>%
   filter(!is.na(monthlyIncome)) %>%
   select(seriousDlqin, debtRatio) %>%
   ggplot(aes(debtRatio, fill = seriousDlqin)) +
-  geom_histogram(binwidth = 0.02) +
+  geom_histogram() +
+  scale_x_log10() +
   geom_vline(xintercept  = 1) +
   theme(legend.position = "") +
   scale_fill_delinquent() +
