@@ -503,8 +503,6 @@ load("data/balanced_prob.Rdata")
 ```
 
 ```{r balanced-model-cf-matrix, include=FALSE}
-model_fixed$finalModel$confusion.matrix %>%
-  kable()
 confusionMatrix(model_fixed$finalModel$confusion.matrix)
 model_with_prob
 ```
