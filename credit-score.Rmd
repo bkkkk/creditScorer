@@ -531,6 +531,13 @@ It's interesting to see that "pastDue30" days is a stronger indicator of potenti
 Next, predictions are generated on the testing data based on this new model. Once the predictions are in place the top 3 predictors are examined. Note that the testing data has gone through the same variable imputation and column name cleaning as the training data.
 
 ```{r testing-prediction}
+imputed_te <- clean_te %>%
+  clean_credit_score_age() %>%
+  clean_credit_score_pastDue30() %>%
+  clean_credit_score_pastDue60() %>%
+  clean_credit_score_pastDue90()  %>%
+  na.omit()
+
 preds <- predict(finalModel, imputed_te)
 
 preds_col = preds$predictions
