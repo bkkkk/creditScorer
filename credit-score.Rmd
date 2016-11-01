@@ -529,7 +529,7 @@ predicted_te <- imputed_te %>%
 ```
 
 
-```{r}
+```{r testing-unsecured-util}
 predicted_te %>%
   ggplot(aes(fill = seriousDlqin, unsecuredUtil)) + geom_histogram() +
   scale_fill_delinquent() +
@@ -544,7 +544,7 @@ predicted_te %>%
 ```
 
 
-```{r}
+```{r testing-debt-ratio}
 predicted_te %>%
   filter(!is.na(monthlyIncome)) %>%
   select(seriousDlqin, debtRatio) %>%
@@ -563,7 +563,7 @@ predicted_te %>%
        y = "")
 ```
 
-```{r}
+```{r testing-past-due30}
 predicted_te %>%
   ggplot(aes(pastDue30, fill = seriousDlqin)) +
   geom_bar() +
