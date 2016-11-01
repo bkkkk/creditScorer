@@ -332,7 +332,7 @@ The debt ratio is closely related to the monthly income variable, which contains
 
 First, removing the missing values substaintially reduces the number of borrowers which have a larger than 1 debt ratio suggesting that there is some interplay between missing values and the higher than expected debt ratios.
 
-It is possible that the debt ratio is calculated using the recorded monthly income, and in the cases where this value is missing some imputation procedure is used that results in extremely high debt ratios. For example, it's possible that all missing monthly incomes were replaced with unity in the debt ratio calculation and the entries in the distribution are actually the debt amount rather than the debt ratio.
+It is possible that the debt ratio is calculated using the recorded monthly income, and in the cases where this value is missing some imputation procedure is used that results in extremely high debt ratios. For example, it is possible that all missing monthly incomes were replaced with 1 in the debt ratio calculation and the entries in the distribution are actually the debt amount rather than the debt ratio.
 
 ```{r debt-ratio-no-na}
 clean_tr %>%
