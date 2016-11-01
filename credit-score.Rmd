@@ -7,13 +7,20 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(randomForest)
 library(readr)
+library(tidyr)
 library(dplyr)
 library(ggplot2)
 library(scales)
 library(caret)
+library(ranger)
+library(knitr)
 
 source("R/func-NA.R")
 source("R/func-clean.R")
+source("R/func-plot.R")
+```
+
+```{r load-data, include=FALSE}
 source("R/01-load.R")
 source("R/02-clean.R")
 source("R/03-treatBad.R")
