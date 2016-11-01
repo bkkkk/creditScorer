@@ -437,13 +437,15 @@ For the sake of this analysis a random forest classifier was chosen. In particul
 
 ```{r rf-nominal-train, eval=FALSE}
 trainControl <- trainControl(method = "cv", number = 5, summaryFunction = twoClassSummary,
-  classProbs = TRUE)
+                             classProbs = TRUE)
 
-model <- train(seriousDlqin ~ .,
-               data = imputed_tr,
-               method = "ranger",
-               trControl = trainControl,
-               verbose = TRUE)
+model <- train(
+  seriousDlqin ~ .,
+  data = imputed_tr,
+  method = "ranger",
+  trControl = trainControl,
+  verbose = TRUE
+)
 
 save(model, file = "data/model.Rdata")
 ```
