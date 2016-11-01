@@ -436,13 +436,15 @@ clean_tr %>%
 For the sake of this analysis a random forest classifier was chosen. In particular, research shows that this is a reliable method applied in this domain. The hyper-parameter mtry, the number of variables to test at each node is optimized using a gradient search and 5-fold cross-validation.
 
 ```{r rf-nominal-train, eval=FALSE}
+mlMethod <- "ranger"
+
 trainControl <- trainControl(method = "cv", number = 5, summaryFunction = twoClassSummary,
                              classProbs = TRUE)
 
 model <- train(
   seriousDlqin ~ .,
   data = imputed_tr,
-  method = "ranger",
+  method = mlMethod,
   trControl = trainControl,
   verbose = TRUE
 )
@@ -470,7 +472,7 @@ upSampledResponse <- upSampled$seriousDlqin
 model_fixed <- train(
   x = upSampledPredictors,
   y = upSampledResponse,
-  method = "ranger",
+  method = mlMethod,
   trControl = trainControl,
   verbose = TRUE,
   tuneGrid = expand.grid(mtry = c(2)),
@@ -480,7 +482,7 @@ model_fixed <- train(
 model_with_prob <- train(
   x = upSampledPredictors,
   y = upSampledResponse,
-  method = "ranger",
+  method = mlMethod,
   trControl = trainControl,
   verbose = TRUE,
   tuneGrid = expand.grid(mtry = c(2)),
