@@ -28,21 +28,33 @@ source("R/03-treatBad.R")
 
 ## Problem statement
 
-Given a large data set of client financial information, attempt to determine if a given client will default on their payment. In this case the default payment is defined as failing to make a payment 90 days after the due date.
+Non-payments of loan installments poses a great risk for borrowers and credit providers. A large number of borrowers makes manual inspection of credit scores and financial histories unfeasable. Moreover, human analysts are notoriously bad at spotting complex patterns in large and varied sets of data. In other words the abundance of data on potential borrowers can only be exploited to the fullest using computer-based approaches like machine learning
+
+Given a large data set of potential borrowers' financial information, attempt to determine if a given client will default on their payment, where default criteria is defined as failing to make a payment 90 days after the due date. Hereafter we refer to clients who failed to pay as *defaulted* and clients who did pay as *paid*.
 
 ## Dataset
 
-Two datasets were used for this study one for training and one for testing with `r nrow(raw_tr)` and `r nrow(raw_tr)` entries respectively. Each set includes 10 predictors, with the training set also including a response variable. These include information about the borrower's income, age, and number of dependants; number of lines of credit; and how many times the borrower missed a due date by as much as 60, 90, or more than 90 days. The full list of variables is included at the end of the report.
+For this challenge, two datasets were provided, one for training and one for testing. Each set has `r nrow(raw_tr)` and `r nrow(raw_te)` entries respectively. Both datasets include 10 predictors, while the training set also includes a response variable.
 
-The training dataset contains `r sum(nacols(raw_tr))` predictors with missing values, namely `r nacols_name(raw_tr)` with `r sum(is.na(raw_tr))` entries in the dataset containing missing values.
+The predictors include information about the borrower's income, age, and number of dependants; number of lines of credit; and how many times the borrower missed a due date by as much as 60, 90, or more than 90 days.
 
-Specifically, `r nacol_percent(raw_tr$MonthlyIncome)`% of the monthly income data is missing while `r nacol_percent(raw_tr$NumberOfDependents)` of the entries are missing the measurement of the number of dependents.
+The dataset contains a wide range of borrowers in age (21 to 109), monthly income (no income to 3 million), and number of dependants (upto 20). It appears that the set of borrowers is inclusive and varied, and allows for the creation of a model with wide applicability.
 
-## Data exploration
+The dataset contains an overwhelming majority of *paid* customer examples, this is to be expected if the borrowing and lending business is a sensible one.
 
-A data summary shows that the dataset contains a wide range of borrowers in age (21 to 109), income (no income to 3 million), and number of dependants (upto 20).
+Approximately `r 100 * mutate(count(clean_tr, seriousDlqin), occ = n/sum(n))$occ[1]`% of the data corresponds to the *paid* class. This imbalance will need to be taken into account when training a model.
 
-The dataset contains an overwhelming majority of negative examples, `r 100*mutate(count(clean_tr, seriousDlqin), occ = n/sum(n))$occ[1]`% of the data corresponds to clients who have not failed to make a payment within 90 days of the due date in the last two years.
+### Missing Data
+
+In the training dataset `r sum(nacols(raw_tr))` of the predictors have missing values, namely `r nacols_name(raw_tr)`. A total of `r sum(is.na(raw_tr))` entries in the dataset are missing atleast one of these values. The breakdown by predictor is included below:
+
+```{r na-breakdown}
+clean_tr %>%
+  select_(.dots = nacols_name(.)) %>%
+  summarize_all(function(x) sum(is.na(x))) %>%
+  gather(key = "Variable", value = "Missing", c(1:2)) %>%
+  knitr::kable()
+```
 
 ### Age
 
