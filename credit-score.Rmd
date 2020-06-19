@@ -50,7 +50,7 @@ In the training dataset `r sum(nacols(raw_tr))` of the predictors have missing v
 
 ```{r na-breakdown}
 clean_tr %>%
-  select_(.dots = nacols_name(.)) %>%
+  select(nacols_name(.)) %>%
   summarize_all(function(x) sum(is.na(x))) %>%
   gather(key = "Variable", value = "Missing", c(1:2)) %>%
   knitr::kable()
@@ -97,7 +97,7 @@ clean_tr %>%
        y = "Number of Dependants")
 ```
 
-As mentioned before about 2% of the entries have no information about the number of dependants. At this point this data is simply ignored, no attempt is made to infer this missing data.
+As mentioned before about 2% of the entries have no information about the number of dependents. At this point this data is simply ignored, no attempt is made to infer this missing data.
 
 ### Times borrowers 30-59 days past due date
 
@@ -198,7 +198,7 @@ clean_tr %>%
        y = "")
 ```
 
-This distribution is surprisingly well behaved following and almost gaussian distribution. There appear to be a few outlier entries with some borrowers having as many as 50+ loans and credit lines. Without any specific domain knowledge to suggest these should be removed, these entries will be left in.
+This distribution is surprisingly well behaved following an almost gaussian distribution. There appear to be a few outliers with some borrowers having as many as 50+ loans and credit lines. Without any specific domain knowledge to suggest these should be removed, these entries will be left in.
 
 ### Number of estate loans and credit lines
 
@@ -237,11 +237,11 @@ clean_tr %>%
        y = "")
 ```
 
-Interestingly, it seems that the borrowers who did default on their payment tend to be in the low monthly income section of the disribution. This makes sense since, having more income makes paying for loans easier.
+Interestingly, it seems that the borrowers who did default on their payment tend to be in the low monthly income section of the distribution. This makes sense since, having more income makes paying for loans easier.
 
 The dataset also includes `r sum(clean_tr$monthlyIncome > 30000, na.rm = T)` high-earners with monthly incomes over 30000.
 
-Interestingly, there also seems to be two peaks at zero and 1 incomes, as can been seen from the distribution below this does not fit the rest of the distribution. It is hard to suggest what could be happening here. This could be mismeasurement where some records are simply missing but were not marked as N/A, another possibility is that 0 and 1 are used as dummy codes. Finally, it is possible that some people simply have no income at all. If there were borrowers with no income one would expect a smooth tail towards zero, having a large peak at zero is highly suspect.
+Interestingly, there also seems to be two peaks at zero and 1 incomes, as can been seen from the distribution below this does not fit the rest of the distribution. It is hard to suggest what could be happening here. This could be mis-measurement where some records are simply missing but were not marked as N/A, another possibility is that 0 and 1 are used as dummy codes. Finally, it is possible that some people simply have no income at all. If there were borrowers with no income one would expect a smooth tail towards zero, having a large peak at zero is highly suspect.
 
 ```{r monthly-income-lowend}
 clean_tr %>%
@@ -259,7 +259,7 @@ clean_tr %>%
        y = "")
 ```
 
-Let us examine these cases more closely, starting with age and number of dependants. Nothing in the age distribution suggests that this is a specific kind of borrower.
+Let us examine these cases more closely, starting with age and number of dependents. Nothing in the age distribution suggests that this is a specific kind of borrower.
 
 ```{r zero-income-age}
 clean_tr %>%
@@ -394,7 +394,7 @@ clean_tr %>%
   theme(legend.position = "") 
 ```
 
-It also appears that the average number of dependants varies with age. Once again as expected, older borrowers tend to have more dependants, until approxmiately 45 years of age where their dependants, likely children, become independants and stop being declared in financial paperwork.
+It also appears that the average number of dependents varies with age. Once again as expected, older borrowers tend to have more dependents, until approximately 45 years of age where their dependents, likely children, become independent and stop being declared in financial paperwork.
 
 ```{r age-vs-ndeps}
 clean_tr %>%
@@ -408,6 +408,27 @@ clean_tr %>%
   xlab("Age") + ylab("Avg. Number of Dependants") +
   theme(legend.position = "")
 ```
+
+```{r age-vs-ndeps}
+clean_tr %>%
+  select(nDependents, monthlyIncome, age) %>%
+  na.omit() %>%
+  mutate(
+    age = case_when(
+      age <= 30 ~ "Young Age",
+      30 < age & age <= 60 ~ "Middle Age",
+      age > 60 ~ "Advanced Age"),
+    nDependents = if_else(nDependents > 6, 6, nDependents)
+  ) %>%
+  group_by(nDependents, age) %>%
+  summarize(monthlyIncome = mean(monthlyIncome)) %>%
+  ggplot(aes(nDependents, monthlyIncome)) +
+  geom_point() +
+  facet_grid(age~., scales = "free") +
+  xlab("Avg. Number of Dependants") + ylab("Income") +
+  theme(legend.position = "")
+```
+
 
 ## Training a Model
 
